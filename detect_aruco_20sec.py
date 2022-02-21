@@ -19,7 +19,7 @@ import keyboard
 # Python version: 3.8
 # Reference: https://www.pyimagesearch.com/2020/12/21/detecting-aruco-markers-with-opencv-and-python/
 
-desired_aruco_dictionary = "DICT_ARUCO_ORIGINAL"
+desired_aruco_dictionary = "DICT_4X4_50"
 
 # The different ArUco dictionaries built into the OpenCV library.
 ARUCO_DICT = {
