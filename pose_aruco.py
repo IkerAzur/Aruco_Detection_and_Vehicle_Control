@@ -18,7 +18,7 @@ import math  # Math library
 # Python version: 3.8
 
 # Dictionary that was used to generate the ArUco marker
-aruco_dictionary_name = "DICT_ARUCO_ORIGINAL"
+aruco_dictionary_name = "DICT_4X4_50"
 
 # The different ArUco dictionaries built into the OpenCV library.
 ARUCO_DICT = {
