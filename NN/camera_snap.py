@@ -13,8 +13,7 @@ if __name__ == '__main__':
 
     while True:
         ret, img = cam.read()
-        cv2.imshow("cameraFeed",
-                   img)  # a window is needed as a context for key capturing (here, I display the camera feed, but there could be anything in the window)
+        cv2.imshow("cameraFeed",img)  # a window is needed as a context for key capturing (here, I display the camera feed, but there could be anything in the window)
         ch = cv2.waitKey(5)
         if ch == ord('q'):
             break

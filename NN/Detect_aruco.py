@@ -61,6 +61,9 @@ def main():
 
     while (True):
 
+        top__right = 1000
+        bottom__right = 1000
+
         # Capture frame-by-frame
         # This method returns True/False as well
         # as the video frame.
@@ -87,11 +90,13 @@ def main():
                 bottom_left = (int(bottom_left[0]), int(bottom_left[1]))
                 top_left = (int(top_left[0]), int(top_left[1]))
 
-                print('top right', top_right)
-                print('bottom right', bottom_right)
-                print('top left', top_left)
-                print('bottom left', bottom_left)
+                print('top right x', top_right[0])
+                print('bottom right x', bottom_right[0])
+                print('top left x', top_left[0])
+                print('bottom left x', bottom_left[0])
 
+                top__right = top_right[0]
+                bottom__right = bottom_right[0]
 
                 # Draw the bounding box of the ArUco detection
                 cv2.line(frame, top_left, top_right, (0, 255, 0), 2)
@@ -113,6 +118,17 @@ def main():
 
         # Display the resulting frame
         cv2.imshow('frame', frame)
+
+
+        if top__right < 0.2 * 640 and bottom__right< 0.2 * 640:
+            print('bacalao')
+            captura = cap.read()[1]
+            height, width = captura.shape[:2]
+            print(height, width)
+            captura_recortada = captura[96:480, 128:640]
+            captura_recortada = cv2.circle(captura_recortada, (150,200), radius=3, color=(0, 0, 255), thickness=-1)
+            cv2.imshow("captura recortada", captura_recortada)
+            cv2.imwrite("captura_recortada_1.jpg", captura_recortada)
 
         # If "q" is pressed on the keyboard,
         # exit this loop
