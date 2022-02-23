@@ -10,6 +10,7 @@ This program:
 from __future__ import print_function  # Python 2/3 compatibility
 import cv2  # Import the OpenCV library
 import numpy as np  # Import Numpy library
+from numpy import savetxt
 
 # Project: ArUco Marker Detector
 # Date created: 12/18/2021
@@ -39,6 +40,8 @@ ARUCO_DICT = {
     "DICT_ARUCO_ORIGINAL": cv2.aruco.DICT_ARUCO_ORIGINAL
 }
 
+salidas_nn_x = []
+salidas_nn_y = []
 
 def main():
     """
@@ -59,6 +62,8 @@ def main():
     # Start the video stream
     cap = cv2.VideoCapture(0)
 
+    num_imagen = 0
+
     while (True):
 
         top__right = 1000
@@ -77,6 +82,8 @@ def main():
         if len(corners) > 0:
             # Flatten the ArUco IDs list
             ids = ids.flatten()
+            id_aruco = int(ids)
+            print(id_aruco)
 
             # Loop over the detected ArUco corners
             for (marker_corner, marker_id) in zip(corners, ids):
@@ -126,14 +133,42 @@ def main():
             height, width = captura.shape[:2]
             print(height, width)
             captura_recortada = captura[96:480, 128:640]
-            captura_recortada = cv2.circle(captura_recortada, (150,200), radius=3, color=(0, 0, 255), thickness=-1)
+
+            # Poner punto rojo en la imagen en funcion del id del aruco
+            if id_aruco == 1:
+                x = 300
+                y = 250
+                captura_recortada = cv2.circle(captura_recortada, (x, y), radius=3, color=(0, 0, 255), thickness=-1)
+            elif id_aruco == 2:
+                x = 500
+                y = 250
+                captura_recortada = cv2.circle(captura_recortada, (x, y), radius=3, color=(0, 0, 255), thickness=-1)
+            else:
+                x = 100
+                y = 250
+                captura_recortada = cv2.circle(captura_recortada, (x, y), radius=3, color=(0, 0, 255), thickness=-1)
+
+            salidas_nn_x.append(x)
+            salidas_nn_y.append(y)
+
             cv2.imshow("captura recortada", captura_recortada)
-            cv2.imwrite("captura_recortada_1.jpg", captura_recortada)
+            directorio = "C:/Users/Iker/PycharmProjects/Aruco_v2/NN/Imagenes/"
+            texto_imagen = "captura_recortada_"
+            str_id_aruco = str(id_aruco) + "_"
+            num_imagen = num_imagen + 1
+            formato_imagen = ".jpg"
+            filename = directorio + texto_imagen + str_id_aruco + str(num_imagen) + formato_imagen
+            cv2.imwrite(filename, captura_recortada)
+
 
         # If "q" is pressed on the keyboard,
         # exit this loop
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+
+    salidas_nn = np.stack((salidas_nn_x, salidas_nn_y), axis = 1)
+    print(salidas_nn)
+    savetxt('data.txt', salidas_nn, delimiter=' ')
 
     # Close down the video stream
     cap.release()
