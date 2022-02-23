@@ -152,7 +152,8 @@ def main():
             salidas_nn_y.append(y)
 
             cv2.imshow("captura recortada", captura_recortada)
-            directorio = "C:/Users/Iker/PycharmProjects/Aruco_v2/NN/Imagenes/"
+            #directorio = "C:/Users/Iker/PycharmProjects/Aruco_v2/NN/Imagenes/"
+            directorio = "C:/Users/Iker/PycharmProjects/Aruco_Detection_and_Vehicle_Control/NN/Imagenes"
             texto_imagen = "captura_recortada_"
             str_id_aruco = str(id_aruco) + "_"
             num_imagen = num_imagen + 1
