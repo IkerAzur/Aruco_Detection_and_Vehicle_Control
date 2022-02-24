@@ -66,11 +66,8 @@ def main():
 
     while (True):
 
-        top__right = 300
-        bottom__right = 300
-        top__left = 300
-        bottom__left = 300
-
+        top__right = 1000
+        bottom__right = 1000
 
         # Capture frame-by-frame
         # This method returns True/False as well
@@ -107,8 +104,6 @@ def main():
 
                 top__right = top_right[0]
                 bottom__right = bottom_right[0]
-                top__left = top_left[0]
-                bottom__left = bottom_left[0]
 
                 # Draw the bounding box of the ArUco detection
                 cv2.line(frame, top_left, top_right, (0, 255, 0), 2)
@@ -128,89 +123,43 @@ def main():
                             cv2.FONT_HERSHEY_SIMPLEX,
                             0.5, (0, 255, 0), 2)
 
-            # TODO: Mejorar este codigo
-            # ArUco en el lado izquierdo de la imagen (lado derecho de la camara)
-            if top__right < 0.2 * 640 and bottom__right < 0.2 * 640:
-                print('Aruco en el lado izquierdo')
-                captura = cap.read()[1]
-                height, width = captura.shape[:2]
-                print(height, width)
-                captura_recortada = captura[96:480, 128:640]
-
-                # Poner punto rojo en la imagen en funcion del id del aruco
-                if id_aruco == 1:
-                    x = 300
-                    y = 250
-                    captura_recortada = cv2.circle(captura_recortada, (x, y), radius=3, color=(0, 0, 255),
-                                                   thickness=-1)
-                elif id_aruco == 2:
-                    x = 500
-                    y = 250
-                    captura_recortada = cv2.circle(captura_recortada, (x, y), radius=3, color=(0, 0, 255),
-                                                   thickness=-1)
-                else:
-                    x = 100
-                    y = 250
-                    captura_recortada = cv2.circle(captura_recortada, (x, y), radius=3, color=(0, 0, 255),
-                                                   thickness=-1)
-
-                salidas_nn_x.append(x)
-                salidas_nn_y.append(y)
-
-                cv2.imshow("captura recortada", captura_recortada)
-                # directorio = "C:/Users/Iker/PycharmProjects/Aruco_v2/NN/Imagenes/"
-                directorio2 = "C:/Users/Iker/PycharmProjects/Aruco_Detection_and_Vehicle_Control/NN/Imagenes/"
-                texto_imagen = "captura_recortada_"
-                str_id_aruco = str(id_aruco) + "_"
-                num_imagen = num_imagen + 1
-                formato_imagen = ".jpg"
-                filename = directorio2 + texto_imagen + str_id_aruco + str(num_imagen) + formato_imagen
-                cv2.imwrite(filename, captura_recortada)
-
-            # ArUco en el lado derecho de la imagen (lado izquierdo de la camara)
-            elif top__left > 0.8 * 640 and bottom__left > 0.8 * 640:
-                print('Aruco en el lado derecho')
-                captura = cap.read()[1]
-                height, width = captura.shape[:2]
-                print(height, width)
-                captura_recortada = captura[1:384, 1:512]
-
-                # Poner punto rojo en la imagen en funcion del id del aruco
-                if id_aruco == 1:
-                    x = 300
-                    y = 250
-                    captura_recortada = cv2.circle(captura_recortada, (x, y), radius=3, color=(0, 0, 255),
-                                                   thickness=-1)
-                elif id_aruco == 2:
-                    x = 500
-                    y = 250
-                    captura_recortada = cv2.circle(captura_recortada, (x, y), radius=3, color=(0, 0, 255),
-                                                   thickness=-1)
-                else:
-                    x = 100
-                    y = 250
-                    captura_recortada = cv2.circle(captura_recortada, (x, y), radius=3, color=(0, 0, 255),
-                                                   thickness=-1)
-
-                salidas_nn_x.append(x)
-                salidas_nn_y.append(y)
-
-                cv2.imshow("captura recortada", captura_recortada)
-                # directorio = "C:/Users/Iker/PycharmProjects/Aruco_v2/NN/Imagenes/"
-                directorio2 = "C:/Users/Iker/PycharmProjects/Aruco_Detection_and_Vehicle_Control/NN/Imagenes/"
-                texto_imagen = "captura_recortada_"
-                str_id_aruco = str(id_aruco) + "_"
-                num_imagen = num_imagen + 1
-                formato_imagen = ".jpg"
-                filename = directorio2 + texto_imagen + str_id_aruco + str(num_imagen) + formato_imagen
-                cv2.imwrite(filename, captura_recortada)
-
-
-
-
         # Display the resulting frame
         cv2.imshow('frame', frame)
 
+
+        if top__right < 0.2 * 640 and bottom__right< 0.2 * 640:
+            print('bacalao')
+            captura = cap.read()[1]
+            height, width = captura.shape[:2]
+            print(height, width)
+            captura_recortada = captura[96:480, 128:640]
+
+            # Poner punto rojo en la imagen en funcion del id del aruco
+            if id_aruco == 1:
+                x = 300
+                y = 250
+                captura_recortada = cv2.circle(captura_recortada, (x, y), radius=3, color=(0, 0, 255), thickness=-1)
+            elif id_aruco == 2:
+                x = 500
+                y = 250
+                captura_recortada = cv2.circle(captura_recortada, (x, y), radius=3, color=(0, 0, 255), thickness=-1)
+            else:
+                x = 100
+                y = 250
+                captura_recortada = cv2.circle(captura_recortada, (x, y), radius=3, color=(0, 0, 255), thickness=-1)
+
+            salidas_nn_x.append(x)
+            salidas_nn_y.append(y)
+
+            cv2.imshow("captura recortada", captura_recortada)
+            #directorio = "C:/Users/Iker/PycharmProjects/Aruco_v2/NN/Imagenes/"
+            directorio = "C:/Users/Iker/PycharmProjects/Aruco_Detection_and_Vehicle_Control/NN/Imagenes"
+            texto_imagen = "captura_recortada_"
+            str_id_aruco = str(id_aruco) + "_"
+            num_imagen = num_imagen + 1
+            formato_imagen = ".jpg"
+            filename = directorio + texto_imagen + str_id_aruco + str(num_imagen) + formato_imagen
+            cv2.imwrite(filename, captura_recortada)
 
 
         # If "q" is pressed on the keyboard,
