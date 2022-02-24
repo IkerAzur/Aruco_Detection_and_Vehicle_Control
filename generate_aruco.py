@@ -17,7 +17,7 @@ import numpy as np  # Import Numpy library
 # Reference: https://www.pyimagesearch.com/2020/12/14/generating-aruco-markers-with-opencv-and-python/
 
 desired_aruco_dictionary = "DICT_4X4_1000"
-aruco_marker_id = 11
+aruco_marker_id = 20
 output_filename = "DICT_ARUCO_ORIGINAL_id11.png"
 
 # The different ArUco dictionaries built into the OpenCV library.
