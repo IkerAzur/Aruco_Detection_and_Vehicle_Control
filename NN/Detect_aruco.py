@@ -220,7 +220,7 @@ def main():
 
     salidas_nn = np.stack((salidas_nn_x, salidas_nn_y), axis = 1)
     print(salidas_nn)
-    savetxt('data.txt', salidas_nn, delimiter=' ')
+    savetxt('data.csv', salidas_nn, delimiter=',')
 
     # Close down the video stream
     cap.release()
