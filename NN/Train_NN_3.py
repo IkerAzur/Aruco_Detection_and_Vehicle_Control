@@ -44,3 +44,5 @@ class XYDataset(torch.utils.data.Dataset):
 dataset = XYDataset('C:/Users/Iker/PycharmProjects/Aruco_Detection_and_Vehicle_Control/NN/Imagenes/', random_hflips=False)
 
 print(len(dataset))
+
+print(dataset[1])
