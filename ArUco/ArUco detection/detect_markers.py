@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import cv2.aruco as aruco
 
-image = cv2.imread("captura.png")
+image = cv2.imread("../Captura.PNG")
 aruco_dict = aruco.Dictionary_get(aruco.DICT_4X4_50)
 parameters = aruco.DetectorParameters_create()
 corners, ids, rejectedImgPoints = aruco.detectMarkers(
