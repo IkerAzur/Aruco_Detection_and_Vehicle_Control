@@ -1,13 +1,17 @@
-from PIL import Image
-import os, os.path
+import cv2
+import glob
+import matplotlib
 
-imgs = []
-path = "C:/Users/Iker/PycharmProjects/Aruco_Detection_and_Vehicle_Control/NN/Imagenes/"
-valid_images = [".jpg", ".gif", ".png", ".tga"]
-for f in os.listdir(path):
-    ext = os.path.splitext(f)[1]
-    if ext.lower() not in valid_images:
-        continue
-    imgs.append(Image.open(os.path.join(path, f)))
+images = [cv2.imread(file) for file in glob.glob('C:/Users/Iker/PycharmProjects/Aruco_Detection_and_Vehicle_Control/NN/Imagenes/*.jpg')]
 
-# path = 'C:/Users/Iker/PycharmProjects/Aruco_Detection_and_Vehicle_Control/NN/Imagenes/'
+print(len(images))
+
+im = images[0]
+x, y, _ = im.shape
+print(x, y)
+
+# cv2.imshow("alcachofa", images[2])
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+
