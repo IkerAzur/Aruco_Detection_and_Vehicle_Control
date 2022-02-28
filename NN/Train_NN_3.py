@@ -11,6 +11,7 @@ import os
 import numpy as np
 import cv2
 import csv
+import pandas as pd
 
 
 class XYDataset(torch.utils.data.Dataset):
@@ -37,17 +38,15 @@ class XYDataset(torch.utils.data.Dataset):
         image = transforms.functional.to_tensor(image)
         image = image.numpy()[::-1].copy()
         image = torch.from_numpy(image)
-        image = transforms.functional.normalize(image, [0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 
-        data_file = 'C:/Users/Iker/PycharmProjects/Aruco_Detection_and_Vehicle_Control/NN/data.csv'
-        csv_reader = csv.reader(data_file)
+        # data_file = 'C:/Users/Iker/PycharmProjects/Aruco_Detection_and_Vehicle_Control/NN/data.csv'
+        df = pd.read_csv('data4nn.csv', names=('x', 'y'))
+        datos = df.to_numpy()
 
-        return image, csv_reader
+        x = datos[:, 0]
+        y = datos[:, 1]
 
-
-x = []
-y = []
-
+        return image, torch.tensor([x, y]).float()
 
 
 

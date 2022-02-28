@@ -13,8 +13,8 @@ datos=df.to_numpy()
 x = datos[:, 0]
 y = datos [:, 1]
 
-print(x[1])
-print(y[2])
+print(x)
+print(y)
 
 # data_file = 'C:/Users/Iker/PycharmProjects/Aruco_Detection_and_Vehicle_Control/NN/data.csv'
 # csv_reader = csv.reader(data_file)
