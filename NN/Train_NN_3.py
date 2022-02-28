@@ -47,7 +47,7 @@ class XYDataset(torch.utils.data.Dataset):
         y = datos[:, 1]
 
         return image, torch.tensor([x, y]).float()
-
+#
 
 
 dataset = XYDataset('C:/Users/Iker/PycharmProjects/Aruco_Detection_and_Vehicle_Control/NN/Imagenes/', random_hflips=False)
