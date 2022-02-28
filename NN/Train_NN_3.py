@@ -55,4 +55,3 @@ dataset = XYDataset('C:/Users/Iker/PycharmProjects/Aruco_Detection_and_Vehicle_C
 print(len(dataset))
 print(dataset[1])
 
-print(y)
