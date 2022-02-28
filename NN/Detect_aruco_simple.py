@@ -152,8 +152,8 @@ def main():
             salidas_nn_y.append(y)
 
             cv2.imshow("captura recortada", captura_recortada)
-            #directorio = "C:/Users/Iker/PycharmProjects/Aruco_v2/NN/Imagenes/"
-            directorio = "C:/Users/Iker/PycharmProjects/Aruco_Detection_and_Vehicle_Control/NN/Imagenes/"
+            directorio = "C:/Users/Iker/PycharmProjects/Aruco_v2/NN/Imagenes/"
+            # directorio = "C:/Users/Iker/PycharmProjects/Aruco_Detection_and_Vehicle_Control/NN/Imagenes/"
             texto_imagen = "captura_recortada_"
             str_id_aruco = str(id_aruco) + "_"
             num_imagen = num_imagen + 1
@@ -169,7 +169,8 @@ def main():
 
     salidas_nn = np.stack((salidas_nn_x, salidas_nn_y), axis = 1)
     print(salidas_nn)
-    savetxt('data.csv', salidas_nn, delimiter=',')
+    savetxt('data4nn.csv', salidas_nn, delimiter=',')
+    np.save('data4nn_numpy.npy', salidas_nn)
 
     # Close down the video stream
     cap.release()
