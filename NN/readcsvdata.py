@@ -11,10 +11,11 @@ df = pd.read_csv('data4nn.csv', names = ('x', 'y'))
 datos=df.to_numpy()
 
 x = datos[:, 0]
-y = datos [:, 1]
+y = datos[:, 1]
 
-print(x)
-print(y)
+
+print(type(x))
+print(x.shape)
 
 # data_file = 'C:/Users/Iker/PycharmProjects/Aruco_Detection_and_Vehicle_Control/NN/data.csv'
 # csv_reader = csv.reader(data_file)
