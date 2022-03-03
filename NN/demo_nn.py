@@ -35,13 +35,15 @@ def main():
         new_image = cv2.resize(frame, (224, 224))
 
         xy = model(preprocess(new_image)).detach().float().cpu().numpy().flatten()
+
         x = xy[0]
         y = xy[1]/2
-
         print(x, y)
 
 
-        cv2.imshow('frame', frame)
+        new_image = cv2.circle(new_image, (int(x), int(y)), radius=3, color=(0, 0, 255), thickness=-1)
+
+        cv2.imshow('frame', new_image)
 
         # If "q" is pressed on the keyboard,
         # exit this loop
