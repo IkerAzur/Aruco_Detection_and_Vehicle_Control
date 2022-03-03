@@ -8,6 +8,7 @@ import torch.nn.functional as F
 import cv2
 import PIL.Image
 
+
 def preprocess(image):
     image = PIL.Image.fromarray(image)
     image = transforms.functional.to_tensor(image).to(device).half()
@@ -31,9 +32,11 @@ def main():
 
         ret, frame = cap.read()
 
-        xy = model(preprocess(frame)).detach().float().cpu().numpy().flatten()
+        new_image = cv2.resize(frame, (224, 224))
+
+        xy = model(preprocess(new_image)).detach().float().cpu().numpy().flatten()
         x = xy[0]
-        y = xy[1]
+        y = xy[1]/2
 
         print(x, y)
 
