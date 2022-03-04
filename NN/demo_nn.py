@@ -5,7 +5,6 @@ import torchvision
 import torch
 import torchvision.transforms as transforms
 import torch.nn.functional as F
-import cv2
 import PIL.Image
 
 
@@ -17,7 +16,7 @@ def preprocess(image):
 model = torchvision.models.resnet18(pretrained=False)
 model.fc = torch.nn.Linear(512, 2)
 
-model.load_state_dict(torch.load('best_steering_model_xy.pth'))
+model.load_state_dict(torch.load(r'NN\best_steering_model_xy.pth'))
 device = torch.device('cuda')
 model = model.to(device)
 model = model.eval().half()
