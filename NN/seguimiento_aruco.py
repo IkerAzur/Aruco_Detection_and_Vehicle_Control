@@ -13,6 +13,7 @@ import numpy as np  # Import Numpy library
 from numpy import savetxt
 import keyboard
 import pyads
+import sys
 
 # Project: ArUco Marker Detector
 # Date created: 12/18/2021
