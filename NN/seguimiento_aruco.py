@@ -73,7 +73,7 @@ def main():
 
     num_imagen = 0
 
-    while (True):
+    while True:
 
         top__right = 1000
         bottom__right = 1000
