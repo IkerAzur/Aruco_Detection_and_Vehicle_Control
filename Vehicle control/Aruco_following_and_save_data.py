@@ -66,7 +66,8 @@ def main():
 
     # Parámetros para el controol de vehículo
     K1 = 0.1                # Ganancia para el control del vehículo
-    error_maximo = 8        # Error máximo del ángulo
+    angulo_maximo = 8        # Error máximo del ángulo
+    v_max = 3               # Velocidad máxima del vehículo
 
     # Inicializar el contador de imágenes
     num_imagen = 0
@@ -131,8 +132,8 @@ def main():
 
                         # Control del vehículo: velocidad y ángulo de las ruedas
                         error = width / 8 - centro_x
-                        angulo = K1 * (error)
-                        velocidad = 3 - error/abs(error_maximo)
+                        angulo = K1 * error
+                        velocidad = v_max - (abs(angulo)/angulo_maximo) * v_max
 
                         # Actualizar vectores salidas
                         salidas_nn_vel.append(velocidad)
