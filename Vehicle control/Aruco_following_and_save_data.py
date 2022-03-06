@@ -52,7 +52,7 @@ def main():
     plc.write_by_name("GVL_Matlab.bStart", True, pyads. PLCTYPE_BOOL)
 
     # Comprobar que tenemos un marcador ArUco válido
-    if ARUCO_DICT.get(desired_aruco_dictionary, None) is None:
+    if ARUCO_DICT.get(diccionario_aruco_deseado, None) is None:
         print("ARUCO NO VALIDO")
         sys.exit(0)
 
@@ -171,7 +171,7 @@ def main():
     # TODO: Cerrar conexion PLC
 
     # Cerrar la conexión de video
-    cap.release()
+    video.release()
     cv2.destroyAllWindows()
     plc.open()
 
