@@ -6,6 +6,7 @@ El Aruco cuando sea detectado en la zona izquierda de la imagen,
 se guardarán tanto la imagen recortada como las consignas de velocidad
 y ángulo del vehículo
 Iker Azurmendi
+GitHub: https://github.com/IkerAzur/Aruco_Detection_and_Vehicle_Control
 '''
 
 # Librerías necesrias para el desarrollo del proyecto
@@ -140,7 +141,7 @@ def main():
                         salidas_nn_ang.append(angulo)
 
                         # Guardar las imagenes recortadas
-                        directorio = "C:/Users/Iker/PycharmProjects/Aruco_Detection_and_Vehicle_Control/Vehicle Control/Imagenes_recortadas/"
+                        directorio = "C:/Users/Iker/PycharmProjects/Aruco_Detection_and_Vehicle_Control/Vehicle_control/Imagenes_recortadas/"
 
                         num_imagen = num_imagen + 1
                         filename = directorio + 'Vel-y-Ang_%03d_%03d_%s.jpg' % (str(num_imagen), velocidad, angulo)
@@ -168,7 +169,9 @@ def main():
     np.save('data4nn_numpy.npy', salidas_nn)
 
     # Cerrar la conexión con PLC
-    # TODO: Cerrar conexion PLC
+    plc.write_by_name("GVL_Matlab.Direccion", False, pyads.PLCTYPE_BOOL)    # Ángulo nulo
+    plc.write_by_name("GVL_Matlab.Velocidad", 0, pyads.PLCTYPE_BOOL)        # Velocidad nula
+    plc.write_by_name("GVL_Matlab.bStart", 0, pyads.PLCTYPE_BOOL)           # Cerrar conexión
 
     # Cerrar la conexión de video
     video.release()
