@@ -144,7 +144,7 @@ def main():
 
                         # Guardar las imagenes recortadas
                         directorio = "C:/Users/Iker/PycharmProjects/Aruco_Detection_and_Vehicle_Control/Vehicle_control/Imagenes_recortadas/"
-                        directorio = "C:/Users/dteso001/Desktop/Iker/ArUco_IKER/Aruco_Detection_and_Vehicle_Control/Vehicle_control/Imagenes_recortadas/"
+                        directorio = "C:/Users/dteso001/Desktop/Iker/ArUco_IKER/Aruco_Detection_and_Vehicle_Control/Vehicle_control/Imagenes_recortadas_3/"
 
                         num_imagen = num_imagen + 1
                         filename = directorio + 'Vel-y-Ang_%s_%03f_%03f.jpg' % (str(num_imagen), velocidad, angulo)
