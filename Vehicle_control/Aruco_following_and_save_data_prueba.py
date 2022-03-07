@@ -14,11 +14,10 @@ import cv2                  # Importar la librería OpenCV
 import numpy as np          # Importar la librería Numpy
 from numpy import savetxt   # Importar la librería para guardar archivos de texto
 import keyboard             # Importar la librería para el teclado
-import pyads                # Importar la librería para la conexión con TwinCat
 import sys
 
 # Diccionario del aruco que se va a detectar
-diccionario_aruco_deseado = "DICT_4x4_100"
+desired_aruco_dictionary = "DICT_4X4_1000"
 
 # Diccionario posibles de aruco
 ARUCO_DICT = {
@@ -47,28 +46,25 @@ salidas_nn_ang = []
 
 def main():
 
-    # Inciar conexión y conectar con el PLC
-    plc = pyads.Connection('169.254.153.119.1.1', 851) # IP y puerto para la conexión ADS con TwinCat
-    plc.open()
-    plc.write_by_name("GVL_Matlab.bStart", True, pyads. PLCTYPE_BOOL)
-
-    # Comprobar que tenemos un marcador ArUco válido
-    if ARUCO_DICT.get(diccionario_aruco_deseado, None) is None:
-        print("ARUCO NO VALIDO")
+    # Comprpbar aruco valido
+    if ARUCO_DICT.get(desired_aruco_dictionary, None) is None:
+        print("[INFO] ArUCo tag of '{}' is not supported".format(
+            args["type"]))
         sys.exit(0)
 
-    # Cargar el diccionario ArUco
-    print("[INFO] Detectando marcadores aruco del typo '{}' ...".format(diccionario_aruco_deseado))
-    diccionario_aruco = cv2.aruco.Dictionary_get(ARUCO_DICT[diccionario_aruco_deseado])
-    parametros_aruco = cv2.aruco.DetectorParameters_create()
+    # Cargar el diccionario de ArUco
+    print("[INFO] detecting '{}' markers...".format(
+        desired_aruco_dictionary))
+    this_aruco_dictionary = cv2.aruco.Dictionary_get(ARUCO_DICT[desired_aruco_dictionary])
+    this_aruco_parameters = cv2.aruco.DetectorParameters_create()
 
     # Iniciar el vídeo
     video = cv2.VideoCapture(0)
 
     # Parámetros para el controol de vehículo
-    K1 = 0.1                # Ganancia para el control del vehículo
-    angulo_maximo = 8        # Error máximo del ángulo
-    v_max = 3               # Velocidad máxima del vehículo
+    K1 = 0.01875                # Ganancia para el control del vehículo
+    angulo_maximo = 1.50        # Error máximo del ángulo
+    v_max = 3                   # Velocidad máxima del vehículo
 
     # Inicializar el contador de imágenes
     num_imagen = 0
@@ -85,7 +81,7 @@ def main():
 
         # Detectar Arucos en el frame del video
         (esquinas, ids, rechazado) = cv2.aruco.detectMarkers(
-            frame, diccionario_aruco, parameters=parametros_aruco)
+            frame, this_aruco_dictionary, parameters=this_aruco_parameters)
 
         # Se detecta Aruco si el número de esquinas es mayor que cero
         if len(esquinas) > 0:
@@ -126,7 +122,7 @@ def main():
 
                         # Guardar la captura de pantalla si se cumplen las condiciones
                         captura = video.read()[1]
-                        captura_recortada = captura[0.25*height:height, 0.25*width:width]
+                        captura_recortada = captura[int(0.25*height):height, int(0.25*width):width]
 
                         # Mostrar la captura recortada
                         cv2.imshow("captura recortada", captura_recortada)
@@ -142,19 +138,24 @@ def main():
 
                         # Guardar las imagenes recortadas
                         directorio = "C:/Users/Iker/PycharmProjects/Aruco_Detection_and_Vehicle_Control/Vehicle_control/Imagenes_recortadas/"
+                        directorio = "C:/Users/dteso001/Desktop/Iker/ArUco_IKER/Aruco_Detection_and_Vehicle_Control/Vehicle_control/Imagenes_recortadas/"
 
                         num_imagen = num_imagen + 1
-                        filename = directorio + 'Vel-y-Ang_%03d_%03d_%s.jpg' % (str(num_imagen), velocidad, angulo)
+                        filename = directorio + 'Vel-y-Ang_%s_%03f_%03f.jpg' % (str(num_imagen), velocidad, angulo)
                         cv2.imwrite(filename, captura_recortada)
+
+                    else:
+                        angulo = 0
+                        velocidad = 0
 
         # Si no se detecta Aruco daremos la orden de no movimiento al robot
         else:
             angulo = 0
             velocidad = 0
 
-        # Escribir valores al PLC
-        plc.write_by_name("GVL_Matlab.Direccion", angulo, pyads.PLCTYPE_REAL)
-        plc.write_by_name("GVL_Matlab.Velocidad", velocidad, pyads.PLCTYPE_REAL)
+        print(velocidad, angulo)
+
+        cv2.imshow('frame', frame)
 
         # Si se presiona "q" en el teclado,
         # salir del bucle
@@ -165,18 +166,15 @@ def main():
     salidas_nn = np.stack((salidas_nn_vel, salidas_nn_ang), axis=1)
     # print(salidas_nn)
     # Guardar valores de dos formas diferentes
-    savetxt('data4nn.csv', salidas_nn, delimiter=',')
-    np.save('data4nn_numpy.npy', salidas_nn)
+    # savetxt('data4nn.csv', salidas_nn, delimiter=',')
+    # np.save('data4nn_numpy.npy', salidas_nn)
 
-    # Cerrar la conexión con PLC
-    plc.write_by_name("GVL_Matlab.Direccion", False, pyads.PLCTYPE_BOOL)    # Ángulo nulo
-    plc.write_by_name("GVL_Matlab.Velocidad", 0, pyads.PLCTYPE_BOOL)        # Velocidad nula
-    plc.write_by_name("GVL_Matlab.bStart", 0, pyads.PLCTYPE_BOOL)           # Cerrar conexión
+
 
     # Cerrar la conexión de video
     video.release()
     cv2.destroyAllWindows()
-    plc.close()
+
 
 if __name__ == '__main__':
     print(__doc__)
