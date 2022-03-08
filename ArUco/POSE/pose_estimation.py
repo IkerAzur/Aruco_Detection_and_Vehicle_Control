@@ -159,9 +159,9 @@ def main():
                 print("transform_translation_x: {}".format(transform_translation_x))
                 print("transform_translation_y: {}".format(transform_translation_y))
                 print("transform_translation_z: {}".format(transform_translation_z))
-                print("roll_x: {}".format(roll_x))
-                print("pitch_y: {}".format(pitch_y))
-                print("yaw_z: {}".format(yaw_z))
+                # print("roll_x: {}".format(roll_x))
+                # print("pitch_y: {}".format(pitch_y))
+                # print("yaw_z: {}".format(yaw_z))
                 print()
 
                 # Draw the axes on the marker
