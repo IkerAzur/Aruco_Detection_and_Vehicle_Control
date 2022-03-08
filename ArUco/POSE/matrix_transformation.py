@@ -13,6 +13,13 @@ import numpy as np  # Import Numpy library
 from scipy.spatial.transform import Rotation as R
 import math  # Math library
 
+from mpl_toolkits import mplot3d
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+
+import time
+
 # Project: ArUco Marker Pose Estimator
 # Date created: 12/21/2021
 # Python version: 3.8
@@ -47,6 +54,13 @@ aruco_marker_side_length = 0.0785
 # Calibration parameters yaml file
 camera_calibration_parameters_filename = 'calibration_chessboard.yaml'
 
+def update_line(hl, new_data):
+	xdata, ydata, zdata = hl._verts3d
+	hl.set_xdata(list(np.append(xdata, new_data[0])))
+	hl.set_ydata(list(np.append(ydata, new_data[1])))
+	hl.set_3d_properties(list(np.append(zdata, new_data[2])))
+	plt.draw()
+
 
 def euler_from_quaternion(x, y, z, w):
     """
@@ -71,10 +85,23 @@ def euler_from_quaternion(x, y, z, w):
     return roll_x, pitch_y, yaw_z  # in radians
 
 
+
 def main():
     """
     Main method of the program.
     """
+
+    map = plt.figure()
+    map_ax = Axes3D(map)
+    map_ax.autoscale(enable=True, axis='both', tight=True)
+
+    # # # Setting the axes properties
+    map_ax.set_xlim3d([-10.0, 10.0])
+    map_ax.set_ylim3d([-10.0, 10.0])
+    map_ax.set_zlim3d([-10.0, 10.0])
+
+    hl, = map_ax.plot3D([0], [0], [0])
+
     # Check that we have a valid ArUco marker
     if ARUCO_DICT.get(aruco_dictionary_name, None) is None:
         print("[INFO] ArUCo tag of '{}' is not supported".format(
@@ -151,17 +178,24 @@ def main():
                 Pos = np.transpose(p)
                 Rot = r.as_matrix()
                 A = np.array([0, 0, 0, 1])
-                T = np.vstack((np.column_stack((Rot, Pos)), A))
+                T_CA = np.vstack((np.column_stack((Rot, Pos)), A))
+                T_RC = np.array([[0, -1, 0, 3], [1, 0, 0, 1], [0, 0, 1, 1], [0, 0, 0, 1]])
 
-                print(T)
+                Biderketa = np.matmul(T_CA, T_RC)
 
+                PosAruco = Biderketa[0:3, 3]
+                # print(Biderketa[0:3, 3])
 
+                update_line(hl, (PosAruco[0], PosAruco[1], PosAruco[2]))
+                plt.show(block=False)
+                plt.pause(1)
 
                 # Draw the axes on the marker
                 cv2.aruco.drawAxis(frame, mtx, dst, rvecs[i], tvecs[i], 0.05)
 
+
         # Display the resulting frame
-        cv2.imshow('frame', frame)
+        # cv2.imshow('frame', frame)
 
         # If "q" is pressed on the keyboard,
         # exit this loop
