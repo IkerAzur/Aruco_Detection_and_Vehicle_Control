@@ -105,6 +105,9 @@ def main():
     print("\n Distortion coefficient:")
     print(dist)
 
+    np.save("calibration_matrix", mtx)
+    np.save("distortion_coefficients", dist)
+
     # Close all windows
     cv2.destroyAllWindows()
 
