@@ -20,12 +20,15 @@ import matplotlib.animation as animation
 
 import time
 
+import matplotlib
+matplotlib.use("TkAgg")
+
 # Project: ArUco Marker Pose Estimator
 # Date created: 12/21/2021
 # Python version: 3.8
 
 # Dictionary that was used to generate the ArUco marker
-aruco_dictionary_name = "DICT_ARUCO_ORIGINAL"
+aruco_dictionary_name = "DICT_4X4_1000"
 
 # The different ArUco dictionaries built into the OpenCV library.
 ARUCO_DICT = {
@@ -54,13 +57,6 @@ aruco_marker_side_length = 0.0785
 # Calibration parameters yaml file
 camera_calibration_parameters_filename = 'calibration_chessboard.yaml'
 
-def update_line(hl, new_data):
-	xdata, ydata, zdata = hl._verts3d
-	hl.set_xdata(list(np.append(xdata, new_data[0])))
-	hl.set_ydata(list(np.append(ydata, new_data[1])))
-	hl.set_3d_properties(list(np.append(zdata, new_data[2])))
-	plt.draw()
-
 
 def euler_from_quaternion(x, y, z, w):
     """
@@ -86,27 +82,10 @@ def euler_from_quaternion(x, y, z, w):
 
 
 
+
 def main():
-    """
-    Main method of the program.
-    """
 
-    map = plt.figure()
-    map_ax = Axes3D(map)
-    map_ax.autoscale(enable=True, axis='both', tight=True)
-
-    # # # Setting the axes properties
-    map_ax.set_xlim3d([-10.0, 10.0])
-    map_ax.set_ylim3d([-10.0, 10.0])
-    map_ax.set_zlim3d([-10.0, 10.0])
-
-    hl, = map_ax.plot3D([0], [0], [0])
-
-    # Check that we have a valid ArUco marker
-    if ARUCO_DICT.get(aruco_dictionary_name, None) is None:
-        print("[INFO] ArUCo tag of '{}' is not supported".format(
-            args["type"]))
-        sys.exit(0)
+    f1=plt.figure()
 
     # Load the camera parameters from the saved file
     cv_file = cv2.FileStorage(
@@ -184,15 +163,16 @@ def main():
                 Biderketa = np.matmul(T_CA, T_RC)
 
                 PosAruco = Biderketa[0:3, 3]
-                # print(Biderketa[0:3, 3])
+                print(p, p[0])
 
-                update_line(hl, (PosAruco[0], PosAruco[1], PosAruco[2]))
-                plt.show(block=False)
-                plt.pause(1)
+                plt.clf()
+                plt.plot(p[0], p[2])
+
+                plt.show()
+                time.sleep(1)
 
                 # Draw the axes on the marker
                 cv2.aruco.drawAxis(frame, mtx, dst, rvecs[i], tvecs[i], 0.05)
-
 
         # Display the resulting frame
         # cv2.imshow('frame', frame)
