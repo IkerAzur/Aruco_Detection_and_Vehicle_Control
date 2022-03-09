@@ -7,7 +7,7 @@ import torchvision.transforms as transforms
 import torch.nn.functional as F
 import PIL.Image
 
-
+# Nerea la reina
 def preprocess(image):
     image = PIL.Image.fromarray(image)
     image = transforms.functional.to_tensor(image).to(device).half()
