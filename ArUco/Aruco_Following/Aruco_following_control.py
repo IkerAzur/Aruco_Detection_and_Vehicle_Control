@@ -44,15 +44,17 @@ def main():
     this_aruco_parameters = cv2.aruco.DetectorParameters_create()
 
     # Iniciar el vídeo
-    video = cv2.VideoCapture(0)
+    video = cv2.VideoCapture(1)
 
     # Parámetros para el controol de vehículo
     error_maximo = 320                          # Error máximo del ángulo
     angulo_maximo = 1.50                        # Error máximo del ángulo
     K = 0.75                                    # Ganancia de moderación del giro
     K1 = K * (angulo_maximo / error_maximo)     # Ganancia para el control del vehículo
-    v_max = 4                                   # Velocidad máxima del vehículo
+    v_max = 12                                   # Velocidad máxima del vehículo
 
+    velocidad = 0
+    angulo = 0
 
     while True:
 
@@ -72,8 +74,6 @@ def main():
         if len(esquinas) > 0:
             # Flatten the ArUco IDs list
             ids = ids.flatten()
-            id_aruco = int(ids)
-            print(id_aruco)
 
             # Obtener el centro del aruco
             # Para ello, se realiza un bucle sobre las esquinas de ArUco detectadas
@@ -95,7 +95,7 @@ def main():
                 cv2.circle(frame, (centro_x, centro_y), 4, (0, 0, 255), -1)
 
                 # Si el aruco es el 991, vamos hacia delante
-                if id_aruco == 991:
+                if marcador_id == 991:
 
                     # Control del vehículo: velocidad y ángulo de las ruedas
                     error = (width/2) - centro_x
@@ -103,22 +103,28 @@ def main():
                     velocidad = v_max - (abs(angulo)/angulo_maximo) * v_max
 
                 # Si el aruco es el 1, giramos a la izquierda
-                elif id_aruco == 1:
+                elif marcador_id == 1:
 
                     velocidad = 1
                     angulo = -1
 
                 # Si el aruco es el 2, giramos a la derecha
-                elif id_aruco == 2:
+                elif marcador_id == 2:
 
                     velocidad = 1
                     angulo = 1
 
-                elif id_aruco == 20:
+                elif marcador_id == 20:
 
                     velocidad = 0
                     angulo = 0
 
+        else:
+            velocidad = 0
+            angulo = 0
+
+
+        print(velocidad, angulo)
         # Mandar consignas al PLC
         plc.write_by_name("GVL_Matlab.Direccion", angulo, pyads.PLCTYPE_REAL)
         plc.write_by_name("GVL_Matlab.Velocidad", velocidad, pyads.PLCTYPE_REAL)

@@ -18,7 +18,7 @@ import math  # Math library
 # Python version: 3.8
 
 # Dictionary that was used to generate the ArUco marker
-aruco_dictionary_name = "DICT_ARUCO_ORIGINAL"
+aruco_dictionary_name = "DICT_4X4_1000"
 
 # The different ArUco dictionaries built into the OpenCV library.
 ARUCO_DICT = {
@@ -45,7 +45,7 @@ ARUCO_DICT = {
 aruco_marker_side_length = 0.0785
 
 # Calibration parameters yaml file
-camera_calibration_parameters_filename = 'calibration_chessboard.yaml'
+camera_calibration_parameters_filename = 'ArUco\POSE\calibration_chessboard.yaml'
 
 
 def euler_from_quaternion(x, y, z, w):
@@ -95,7 +95,9 @@ def main():
     this_aruco_parameters = cv2.aruco.DetectorParameters_create()
 
     # Start the video stream
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
+
+    #TODO: try, except para excepciones
 
     while (True):
 
