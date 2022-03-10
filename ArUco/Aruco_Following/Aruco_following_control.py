@@ -94,7 +94,7 @@ def main():
                 centro_y = int((arriba_izquierda[1] + abajo_derecha[1]) / 2.0)
                 cv2.circle(frame, (centro_x, centro_y), 4, (0, 0, 255), -1)
 
-                # Si el aruco es el 991, actuamos
+                # Si el aruco es el 991, vamos hacia delante
                 if id_aruco == 991:
 
                     # Control del vehículo: velocidad y ángulo de las ruedas
@@ -102,10 +102,22 @@ def main():
                     angulo = K1 * error
                     velocidad = v_max - (abs(angulo)/angulo_maximo) * v_max
 
+                # Si el aruco es el 1, giramos a la izquierda
                 elif id_aruco == 1:
 
                     velocidad = 1
+                    angulo = -1
+
+                # Si el aruco es el 2, giramos a la derecha
+                elif id_aruco == 2:
+
+                    velocidad = 1
                     angulo = 1
+
+                elif id_aruco == 20:
+
+                    velocidad = 0
+                    angulo = 0
 
         # Mandar consignas al PLC
         plc.write_by_name("GVL_Matlab.Direccion", angulo, pyads.PLCTYPE_REAL)
