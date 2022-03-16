@@ -42,10 +42,10 @@ ARUCO_DICT = {
 }
 
 # Side length of the ArUco marker in meters
-aruco_marker_side_length = 0.0785
+aruco_marker_side_length = 0.0735
 
 # Calibration parameters yaml file
-camera_calibration_parameters_filename = 'ArUco\POSE\calibration_chessboard.yaml'
+camera_calibration_parameters_filename = 'calibration_chessboard.yaml'
 
 
 def euler_from_quaternion(x, y, z, w):
@@ -95,7 +95,7 @@ def main():
     this_aruco_parameters = cv2.aruco.DetectorParameters_create()
 
     # Start the video stream
-    cap = cv2.VideoCapture(1)
+    cap = cv2.VideoCapture(0)
 
     #TODO: try, except para excepciones
 
