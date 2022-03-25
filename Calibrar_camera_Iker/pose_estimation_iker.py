@@ -12,6 +12,7 @@ import cv2  # Import the OpenCV library
 import numpy as np  # Import Numpy library
 from scipy.spatial.transform import Rotation as R
 import math  # Math library
+import time
 
 # Project: ArUco Marker Pose Estimator
 # Date created: 12/21/2021
@@ -42,7 +43,7 @@ ARUCO_DICT = {
 }
 
 # Side length of the ArUco marker in meters
-aruco_marker_side_length = 0.1
+aruco_marker_side_length = 0.096
 
 # Calibration parameters yaml file
 camera_calibration_parameters_filename = 'calibration_chessboard.yaml'
@@ -169,6 +170,8 @@ def main():
                 print("pitch_y: {}".format(pitch_y))
                 print("yaw_z: {}".format(yaw_z))
                 print()
+
+                time.sleep(2)
 
                 # Draw the axes on the marker
                 cv2.aruco.drawAxis(frame, mtx, dst, rvecs[i], tvecs[i], 0.05)
