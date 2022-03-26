@@ -32,7 +32,7 @@ ARUCO_DICT = {
 }
 
 # Dimension de un lado del aruco en metros
-aruco_marker_side_length = 0.096
+aruco_marker_side_length = 0.0735
 
 # Parametros de calibracion
 camera_calibration_parameters_filename = 'calibration_chessboard.yaml'
