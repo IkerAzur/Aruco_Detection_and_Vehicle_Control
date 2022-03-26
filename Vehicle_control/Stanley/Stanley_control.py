@@ -66,12 +66,18 @@ h_camara = 0.20 # Altura a la que está situada la camara (m)
 
 # Parametros del control Stanley
 k1 = 1              # Ganancia proporcional 1
-k2 = 1              # Ganancia proporcional 2
-k3 = 0.5            # Ganancia proporcional de velocidad
+k2 = 0.5              # Ganancia proporcional 2
+k3 = 10            # Ganancia proporcional de velocidad
 d_min = 0           # Ángulo mínimo de giro
 d_max = 90          # Ángulo máximo de giro
 
+
 def main():
+
+    # Inciar parametros a cero
+    yaw_z = 0
+    transform_translation_x = 0
+    transform_translation_z = 0
 
     # Cargar los parametros de calibracion de la camara
     cv_file = cv2.FileStorage(
@@ -157,7 +163,8 @@ def main():
                 # print("pitch_y: {}".format(pitch_y))
                 # print("yaw_z: {}".format(yaw_z))
 
-                time.sleep(1)
+                print(i, transform_translation_x, transform_translation_z, yaw_z)
+                time.sleep(2)
 
                 # Draw the axes on the marker
                 cv2.aruco.drawAxis(frame, mtx, dst, rvecs[i], tvecs[i], 0.05)
@@ -188,14 +195,19 @@ def main():
 
         error = d_hor * math.sin(psi_1) # Desplazamiento lateral
 
-        delta = k1 * (psi + np.arctan2(k2 * error / vel))
+        delta = k1 * (psi + np.arctan2(k2 * error, vel))
 
-        if delta < 0:
-            delta = 0
-        elif delta > 0:
-            delta = 90
+        if delta < -45:
+            delta = -45
+        elif delta > 45:
+            delta = 45
         else:
             delta = delta
+
+        print(vel, delta)
+        print(x_aruco, z_aruco, psi)
+
+        #time.sleep(2)
 
         # Display the resulting frame
         cv2.imshow('frame', frame)
